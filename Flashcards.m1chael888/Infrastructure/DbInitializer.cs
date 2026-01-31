@@ -1,4 +1,7 @@
-﻿namespace Flashcards.m1chael888.Infrastructure
+﻿using Dapper;
+using Microsoft.Data.SqlClient;
+
+namespace Flashcards.m1chael888.Infrastructure
 {
     public interface IDbInitializer
     {
@@ -15,6 +18,30 @@
 
         public void Initialize()
         {
+            var sql = @"IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Stacks')
+                        BEGIN
+                            CREATE TABLE Stacks (
+                                StackId INTEGER IDENTITY(1,1) PRIMARY KEY,
+                                Name TEXT NOT NULL
+                            );
+                        END
+
+                        IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Flashcards')
+                        BEGIN
+                            CREATE TABLE Cards (
+                                CardId INTEGER IDENTITY(1,1) PRIMARY KEY,
+                                Front TEXT NOT NULL,
+                                Back TEXT NOT NULL,
+                                StackId INTEGER FOREIGN KEY REFERENCES Stacks(StackId) 
+                            );
+                        END";
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Execute(sql);
+
+            }
+
             Console.ReadKey();
         }
     }

@@ -14,7 +14,7 @@ namespace Flashcards.m1chael888
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appSettings.json")
                 .Build();
-            var connectionString = builder.GetConnectionString("source");
+            var connectionString = builder.GetConnectionString("ConnectionString");
 
             var collection = new ServiceCollection();
 
