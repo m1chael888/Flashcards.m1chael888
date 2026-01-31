@@ -13,9 +13,9 @@ namespace Flashcards.m1chael888.Views
         {
             var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<MainMenuOption>()
-                    .Title("[green]Main Menu::[/]")
+                    .Title("[lime]Main Menu::[/]")
                     .AddChoices(Enum.GetValues<MainMenuOption>())
-                    .HighlightStyle("green")
+                    .HighlightStyle("lime")
                     .WrapAround()
                     );
             return choice;

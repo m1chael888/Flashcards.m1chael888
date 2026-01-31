@@ -25,13 +25,11 @@ namespace Flashcards.m1chael888.Controllers
             {
                 case MainMenuOption.Study:
                     Console.WriteLine("under construction");
-                    Console.ReadKey();
-                    HandleMainMenuOption();
+                    ReturnToMenu();
                     break;
                 case MainMenuOption.Manage:
                     Console.WriteLine("under construction");
-                    Console.ReadKey();
-                    HandleMainMenuOption();
+                    ReturnToMenu();
                     break;
                 case MainMenuOption.Exit:
                     Environment.Exit(0);
@@ -43,6 +41,18 @@ namespace Flashcards.m1chael888.Controllers
         {
             var choice = _mainMenuView.Call();
             return choice;
+        }
+
+        private void ReturnToMenu()
+        {
+            AnsiConsole.Status()
+                .Spinner(Spinner.Known.Point)
+                .SpinnerStyle("white")
+                .Start("Press any key to return to menu", x =>
+                {
+                    Console.ReadKey();
+                });
+            HandleMainMenuOption();
         }
     }
 }
