@@ -15,7 +15,7 @@
 
         public void Initialize()
         {
-            
+            Console.ReadKey();
         }
     }
 }
