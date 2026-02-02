@@ -7,7 +7,7 @@ namespace Flashcards.m1chael888.Views
     public interface IManageView
     {
         ManageMenuOption ShowMenu();
-        string GetStackName(string msg);
+        string GetStackName(string msg, bool exists = false);
         ViewStacksOption DisplayStackList(List<StackModel> stacks); 
         StackModel DisplayStackPrompt(List<StackModel> stacks, string title);
     }
@@ -25,9 +25,11 @@ namespace Flashcards.m1chael888.Views
             return choice;
         }
 
-        public string GetStackName(string msg)
+        public string GetStackName(string msg, bool exists = false)
         {
+            Console.Clear();
             AnsiConsole.MarkupLine($"[lime]{msg}[/]\n");
+            if (exists) AnsiConsole.MarkupLine("[red]Enter a unique stack name!![/]");
             var input = AnsiConsole.Ask<string>("[lime]What would you like to call your stack??[/]");
             return input;
         }

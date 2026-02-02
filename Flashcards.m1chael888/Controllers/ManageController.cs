@@ -49,8 +49,8 @@ namespace Flashcards.m1chael888.Controllers
         private void CallStackCreate()
         {
             string stackName = CallGetStackName("Create stack::");
-            _manageService.StackCreate(stackName);
 
+            _manageService.StackCreate(stackName);
             ReturnToMenuWithMsg("Stack saved successfully");
         }
 
@@ -65,7 +65,7 @@ namespace Flashcards.m1chael888.Controllers
                     CallCardsRead();
                     break;
                 case ViewStacksOption.Back:
-                    CallManageMenu();
+                    HandleManageMenu();
                     break;
             }
         }
@@ -106,7 +106,13 @@ namespace Flashcards.m1chael888.Controllers
          
         private string CallGetStackName(string msg)
         {
+            var stacks = GetStackList();
             string stackName = _manageView.GetStackName(msg);
+
+            while (stacks.Where(x => x.Name == stackName).Count() > 0)
+            {
+                stackName = _manageView.GetStackName(msg, exists: true);
+            }
             return stackName;
         }
 
