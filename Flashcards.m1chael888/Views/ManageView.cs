@@ -24,7 +24,7 @@ namespace Flashcards.m1chael888.Views
 
         public string GetNewStack()
         {
-            AnsiConsole.MarkupLine("[lime]Creating a stack::\n[/]");
+            AnsiConsole.MarkupLine("[lime]Creating a stack::[/]\n");
             var input = AnsiConsole.Ask<string>("[lime]What would you like to call your new stack??[/]");
             return input;
         }

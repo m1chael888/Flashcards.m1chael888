@@ -6,5 +6,12 @@
     }
     public class CardRepository : ICardRepository
     {
+        private readonly string _connectionString;
+        public CardRepository(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
+
     }
 }

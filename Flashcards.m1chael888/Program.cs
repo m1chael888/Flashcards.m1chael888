@@ -1,11 +1,12 @@
-﻿using System.Text;
+﻿using Flashcards.m1chael888.Controllers;
+using Flashcards.m1chael888.Infrastructure;
+using Flashcards.m1chael888.Repositories;
+using Flashcards.m1chael888.Services;
+using Flashcards.m1chael888.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Flashcards.m1chael888.Infrastructure;
-using Flashcards.m1chael888.Controllers;
-using Flashcards.m1chael888.Views;
-using Flashcards.m1chael888.Services;
-using Flashcards.m1chael888.Repositories;
+using System.Text;
+using static Flashcards.m1chael888.Views.MainMenuViewEnums;
 
 namespace Flashcards.m1chael888
 {
@@ -23,22 +24,46 @@ namespace Flashcards.m1chael888
             var collection = new ServiceCollection();
 
             collection.AddScoped<IDbInitializer>(x => new DbInitializer(connectionString));
-            collection.AddScoped<IFlashcardsController, FlashcardsController>();
+            collection.AddScoped<StudyController>();
+            collection.AddScoped<ManageController>();
+
             collection.AddScoped<IMainMenuView, MainMenuView>();
             collection.AddScoped<IStudyView, StudyView>();
             collection.AddScoped<IManageView, ManageView>();
-            collection.AddScoped<IStackService, StackService>();
-            collection.AddScoped<IStackRepository, StackRepository>();
-            collection.AddScoped<ICardService, CardService>();
-            collection.AddScoped<ICardRepository, CardRepository>();
+
+            collection.AddScoped<IStudyService, StudyService>();
+            collection.AddScoped<IManageService, ManageService>();
+
+            collection.AddScoped<IStackRepository>(x => new StackRepository(connectionString));
+            collection.AddScoped<ICardRepository>(x => new CardRepository(connectionString));
 
             var provider = collection.BuildServiceProvider();
 
             var initializer = provider.GetRequiredService<IDbInitializer>();
             initializer.Initialize();
 
-            var controller = provider.GetRequiredService<IFlashcardsController>();
-            controller.HandleMainMenu();
+            var mainMenu = provider.GetRequiredService<IMainMenuView>();
+            var studyController = provider.GetRequiredService<StudyController>();
+            var manageController = provider.GetRequiredService<ManageController>();
+
+            while (true)
+            {
+                Console.Clear();
+                var choice = mainMenu.ShowMenu();
+
+                switch (choice)
+                {
+                    case MainMenuOption.Study:
+                        studyController.HandleStudyMenu();
+                        break;
+                    case MainMenuOption.Manage:
+                        manageController.HandleManageMenu();
+                        break;
+                    case MainMenuOption.Exit:
+                        Environment.Exit(0);
+                        break;
+                }
+            }
         }
     } 
 }
