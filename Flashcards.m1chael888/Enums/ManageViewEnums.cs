@@ -25,5 +25,17 @@ namespace Flashcards.m1chael888.Enums
             [Description("Back")]
             Back
         }
+
+        public enum ViewCardsOption
+        {
+            [Description("Create a card")]
+            CreateCard,
+            [Description("Update a card")]
+            UpdateCard,
+            [Description("Delete a card")]
+            DeleteCard,
+            [Description("Back")]
+            Back
+        }
     }
 }

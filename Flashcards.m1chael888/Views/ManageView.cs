@@ -11,6 +11,8 @@ namespace Flashcards.m1chael888.Views
         string GetStackName(string msg, bool exists = false);
         ViewStacksOption DisplayStackList(List<StackModel> stacks); 
         StackModel DisplayStackPrompt(List<StackModel> stacks, string title);
+        void DisplayCardList(List<CardDto> cards, string stackName);
+        ViewCardsOption DisplayCardMenu();
     }
     public class ManageView : IManageView
     {
@@ -59,11 +61,34 @@ namespace Flashcards.m1chael888.Views
         public StackModel DisplayStackPrompt(List<StackModel> stacks, string title)
         {
             var choice = AnsiConsole.Prompt(
-                            new SelectionPrompt<StackModel>().Title($"[lime]{title}[/]")
-                            .UseConverter(x => $"{x.StackId}\t{x.Name}")
+                            new SelectionPrompt<StackModel>()
+                            .Title($"[lime]{title}[/]")
+                            .UseConverter(x => $"{x.Name}")
                             .HighlightStyle("lime")
                             .WrapAround()
                             .AddChoices(stacks)
+                            );
+            return choice;
+        }
+
+        public void DisplayCardList(List<CardDto> cards, string stackName)
+        {
+            AnsiConsole.MarkupLine($"[lime]Cards in {stackName}::[/]\n");
+            AnsiConsole.MarkupLine("[lime]Id\tFront\tBack[/]");
+            foreach (CardDto card in cards)
+            {
+                AnsiConsole.MarkupLine($"{card.CardId}\t{card.Front}\t{card.Back}");
+            }
+        }
+
+        public ViewCardsOption DisplayCardMenu()
+        {
+            var choice = AnsiConsole.Prompt(
+                            new SelectionPrompt<ViewCardsOption>()
+                            .AddChoices(Enum.GetValues<ViewCardsOption>())
+                            .UseConverter(x => GetDescription(x))
+                            .HighlightStyle("lime")
+                            .WrapAround()
                             );
             return choice;
         }

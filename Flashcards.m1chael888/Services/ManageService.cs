@@ -9,6 +9,10 @@ namespace Flashcards.m1chael888.Services
         List<StackModel> StacksRead();
         void StackUpdate(StackModel stack);
         void StackDelete(StackModel stack);
+        void CardCreate();
+        List<CardDto> CardsRead(StackModel stack);
+        void CardUpdate();
+        void CardDelete();
 
     }
     public class ManageService : IManageService
@@ -46,9 +50,19 @@ namespace Flashcards.m1chael888.Services
             _cardRepository.Create();
         }
 
-        public void CardsRead()
+        public List<CardDto> CardsRead(StackModel stack)
         {
-            _cardRepository.Read();
+            List<CardModel> cardModels = _cardRepository.Read(stack.StackId);
+            var cardDtos = new List<CardDto>();
+
+            foreach (var card in cardModels)
+            {
+                var cardDto = new CardDto();
+                cardDto.CardId = card.CardId;
+                cardDto.Front = card.Front;
+                cardDto.Back = card.Back;
+            }
+            return cardDtos;
         }
 
         public void CardUpdate()
