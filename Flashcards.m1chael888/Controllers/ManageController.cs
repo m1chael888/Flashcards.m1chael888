@@ -1,4 +1,4 @@
-﻿using static Flashcards.m1chael888.Views.ManageViewEnums;
+﻿using static Flashcards.m1chael888.Enums.ManageViewEnums;
 using Flashcards.m1chael888.Views;
 using Spectre.Console;
 using Flashcards.m1chael888.Services;
@@ -74,8 +74,7 @@ namespace Flashcards.m1chael888.Controllers
         {
             Console.Clear();
             var stacks = GetStackList();
-            _manageView.DisplayStackPrompt(stacks, "Choose which stack's cards youd like to view::");
-            // show cards
+            var choice = _manageView.DisplayStackPrompt(stacks, "Choose which stack's cards youd like to view::");
         }
 
         private void CallStackUpdate()

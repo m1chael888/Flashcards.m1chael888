@@ -1,6 +1,6 @@
 ﻿using Flashcards.m1chael888.Views;
 using Spectre.Console;
-using static Flashcards.m1chael888.Views.StudyViewEnums;
+using static Flashcards.m1chael888.Enums.StudyViewEnums;
 
 namespace Flashcards.m1chael888.Controllers
 {

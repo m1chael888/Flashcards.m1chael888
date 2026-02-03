@@ -14,9 +14,11 @@ namespace Flashcards.m1chael888.Services
     public class ManageService : IManageService
     {
         private IStackRepository _stackRepository;
-        public ManageService(IStackRepository stackRepository)
+        private ICardRepository _cardRepository;
+        public ManageService(IStackRepository stackRepository, ICardRepository cardRepository)
         {
             _stackRepository = stackRepository;
+            _cardRepository = cardRepository;
         }
 
         public void StackCreate(string stackName)
@@ -38,5 +40,26 @@ namespace Flashcards.m1chael888.Services
         {
             _stackRepository.Delete(stack.StackId);
         }
+
+        public void CardCreate()
+        {
+            _cardRepository.Create();
+        }
+
+        public void CardsRead()
+        {
+            _cardRepository.Read();
+        }
+
+        public void CardUpdate()
+        {
+            _cardRepository.Update();
+        }
+
+        public void CardDelete()
+        {
+            _cardRepository.Delete();
+        }
+
     }
 }

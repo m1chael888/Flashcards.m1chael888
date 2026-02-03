@@ -2,7 +2,10 @@
 {
     public interface ICardRepository
     {
-
+        void Create();
+        void Read();
+        void Update();
+        void Delete();
     }
     public class CardRepository : ICardRepository
     {
@@ -12,6 +15,24 @@
             _connectionString = connectionString;
         }
 
+        public void Create()
+        {
 
+        }
+
+        public void Read()
+        {
+
+        }
+
+        public void Update()
+        {
+
+        }
+
+        public void Delete()
+        {
+
+        }
     }
 }

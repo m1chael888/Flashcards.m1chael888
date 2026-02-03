@@ -34,6 +34,16 @@ namespace Flashcards.m1chael888.Infrastructure
                                 Back TEXT NOT NULL,
                                 StackId INTEGER FOREIGN KEY REFERENCES Stacks(StackId) 
                             );
+                        END
+
+                        IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Sessions')
+                        BEGIN
+                            CREATE TABLE Sessions (
+                                SessionId INTEGER IDENTITY(1,1) PRIMARY KEY,
+                                Date TEXT NOT NULL,
+                                Score TEXT NOT NULL,
+                                StackId INTEGER FOREIGN KEY REFERENCES Stacks(StackId) 
+                            );
                         END";
 
             using (var connection = new SqlConnection(_connectionString))

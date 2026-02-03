@@ -1,5 +1,6 @@
 ﻿using Spectre.Console;
-using static Flashcards.m1chael888.Views.ManageViewEnums;
+using static Flashcards.m1chael888.Enums.ManageViewEnums;
+using static Flashcards.m1chael888.Enums.EnumExtension;
 using Flashcards.m1chael888.Models;
 
 namespace Flashcards.m1chael888.Views
@@ -19,6 +20,7 @@ namespace Flashcards.m1chael888.Views
                 new SelectionPrompt<ManageMenuOption>()
                     .Title("[lime]Manage Menu::[/]")
                     .AddChoices(Enum.GetValues<ManageMenuOption>())
+                    .UseConverter(x => GetDescription(x))
                     .HighlightStyle("lime")
                     .WrapAround()
                     );
@@ -37,6 +39,7 @@ namespace Flashcards.m1chael888.Views
         public ViewStacksOption DisplayStackList(List<StackModel> stacks)
         {
             AnsiConsole.MarkupLine("[lime]View Stacks::[/]\n");
+            AnsiConsole.MarkupLine("[lime]Id\tName[/]");
             foreach (StackModel stack in stacks)
             {
                 AnsiConsole.MarkupLine($"{stack.StackId}\t{stack.Name}");
@@ -46,6 +49,7 @@ namespace Flashcards.m1chael888.Views
                             new SelectionPrompt<ViewStacksOption>()
                             .Title("")
                             .AddChoices(Enum.GetValues<ViewStacksOption>())
+                            .UseConverter(x => GetDescription(x))
                             .HighlightStyle("lime")
                             .WrapAround()
                             );

@@ -6,7 +6,7 @@ using Flashcards.m1chael888.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text;
-using static Flashcards.m1chael888.Views.MainMenuViewEnums;
+using static Flashcards.m1chael888.Enums.MainMenuViewEnums;
 
 namespace Flashcards.m1chael888
 {

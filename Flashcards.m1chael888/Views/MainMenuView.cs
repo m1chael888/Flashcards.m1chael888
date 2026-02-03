@@ -1,5 +1,6 @@
 ﻿using Spectre.Console;
-using static Flashcards.m1chael888.Views.MainMenuViewEnums;
+using static Flashcards.m1chael888.Enums.MainMenuViewEnums;
+using static Flashcards.m1chael888.Enums.EnumExtension;
 
 namespace Flashcards.m1chael888.Views
 {
@@ -15,6 +16,7 @@ namespace Flashcards.m1chael888.Views
                 new SelectionPrompt<MainMenuOption>()
                     .Title("[lime]Main Menu::[/]")
                     .AddChoices(Enum.GetValues<MainMenuOption>())
+                    .UseConverter(x => GetDescription(x))
                     .HighlightStyle("lime")
                     .WrapAround()
                     );
