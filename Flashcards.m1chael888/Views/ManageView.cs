@@ -66,7 +66,7 @@ namespace Flashcards.m1chael888.Views
             var choice = AnsiConsole.Prompt(
                             new SelectionPrompt<StackModel>()
                             .Title($"[lime]{title}[/]")
-                            .UseConverter(x => $"{x.Name}")
+                            .UseConverter(x => $"{x.StackId}\t{x.Name}")
                             .HighlightStyle("lime")
                             .WrapAround()
                             .AddChoices(stacks)

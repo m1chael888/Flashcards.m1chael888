@@ -60,8 +60,8 @@ namespace Flashcards.m1chael888.Repositories
 
         public void Delete(int stackId)
         {
-            var sql = @"DELETE FROM Stacks WHERE StackId = @StackId
-                        DELETE FROM Cards WHERE StackId = @StackId";
+            var sql = @"DELETE FROM Cards WHERE StackId = @StackId
+                        DELETE FROM Stacks WHERE StackId = @StackId";
 
             using (var connection = new SqlConnection(_connectionString))
             {
