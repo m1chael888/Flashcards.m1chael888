@@ -32,7 +32,8 @@ namespace Flashcards.m1chael888
             collection.AddScoped<IManageView, ManageView>();
 
             collection.AddScoped<IStudyService, StudyService>();
-            collection.AddScoped<IManageService, ManageService>();
+            collection.AddScoped<IStackService, StackService>();
+            collection.AddScoped<ICardService, CardService>();
 
             collection.AddScoped<IStackRepository>(x => new StackRepository(connectionString));
             collection.AddScoped<ICardRepository>(x => new CardRepository(connectionString));

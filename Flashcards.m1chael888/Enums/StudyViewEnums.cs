@@ -8,6 +8,8 @@ namespace Flashcards.m1chael888.Enums
         {
             [Description("Choose a stack to study from")]
             ChooseStack,
+            [Description("View study history")]
+            StudyHistory,
             [Description("Back")]
             Back
         }

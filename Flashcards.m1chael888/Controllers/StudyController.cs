@@ -21,6 +21,9 @@ namespace Flashcards.m1chael888.Controllers
                 case StudyMenuOption.ChooseStack:
                     
                     break;
+                case StudyMenuOption.StudyHistory:
+
+                    break;
                 case StudyMenuOption.Back:
                     break;
             }
