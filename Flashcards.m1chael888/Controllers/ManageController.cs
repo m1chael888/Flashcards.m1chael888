@@ -71,14 +71,24 @@ namespace Flashcards.m1chael888.Controllers
             }
         }
 
-        private void CallCardsRead()
+        private void CallStackUpdate()
         {
-            Console.Clear();
             var stacks = GetStackList();
-            var choice = _manageView.DisplayStackPrompt(stacks, "Choose which stack's cards youd like to view::");
-            var cards = _manageService.CardsRead(choice);
+            var choice = _manageView.DisplayStackPrompt(stacks, "Choose a stack of cards to update::");
+            choice.Name = CallGetStackName("Update stack::");
 
-            CallShowCards(cards, choice);
+            _manageService.StackUpdate(choice);
+
+            ReturnToManageMenu("Stack updated successfully");
+        }
+
+        private void CallStackDelete()
+        {
+            var stacks = GetStackList();
+            var choice = _manageView.DisplayStackPrompt(stacks, "Choose a stack of cards to delete::");
+            _manageService.StackDelete(choice);
+
+            ReturnToManageMenu("Stack deleted successfully");
         }
 
         private void CallShowCards(List<CardDto> cards, StackModel choice)
@@ -127,63 +137,52 @@ namespace Flashcards.m1chael888.Controllers
             ReturnToCardList(choice, "Card created successfully =)");
         }
 
+        private void CallCardsRead()
+        {
+            Console.Clear();
+            var stacks = GetStackList();
+            var choice = _manageView.DisplayStackPrompt(stacks, "Choose which stack's cards youd like to view::");
+            var cards = _manageService.CardsRead(choice);
+
+            CallShowCards(cards, choice);
+        }
+
         void CallCardUpdate(StackModel choice)
         {
             var cards = GetCardList(choice);
-            var card = _manageView.DisplayCardPrompt(cards, "Choose a card to update::");
-            var front = _manageView.GetCardFront("Updating");
-            var back = _manageView.GetCardBack("Updating");
-            var updatedCard = new CardModel();
-            updatedCard.CardId = card.CardId;
-            updatedCard.Front = front;
-            updatedCard.Back = back;
-            updatedCard.StackId = choice.StackId;
+            if (cards.Count() == 0)
+            {
+                CallShowCards(cards, choice);
+            }
+            else
+            {
+                var card = _manageView.DisplayCardPrompt(cards, "Choose a card to update::");
+                var front = _manageView.GetCardFront("Updating");
+                var back = _manageView.GetCardBack("Updating");
+                var updatedCard = new CardModel();
+                updatedCard.CardId = card.CardId;
+                updatedCard.Front = front;
+                updatedCard.Back = back;
+                updatedCard.StackId = choice.StackId;
 
-            _manageService.CardUpdate(updatedCard);
-            ReturnToCardList(choice, "Card updated successfully =)");
+                _manageService.CardUpdate(updatedCard);
+                ReturnToCardList(choice, "Card updated successfully =)");
+            }
         }
 
         void CallCardDelete(StackModel choice)
         {
             var cards = GetCardList(choice);
-            var card = _manageView.DisplayCardPrompt(cards, "Choose a card to delete::");
-            _manageService.CardDelete(card.CardId);
-            ReturnToCardList(choice, "Card deleted successfully =)");
-        }
-
-        private void ReturnToCardList(StackModel choice, string msg)
-        {
-            Console.Clear();
-            AnsiConsole.MarkupLine($"[lime]{msg}[/]");
-
-            AnsiConsole.Status()
-                .Spinner(Spinner.Known.Point)
-                .SpinnerStyle("white")
-                .Start("Press any key to return", x =>
-                {
-                    Console.ReadKey();
-                });
-            CallShowCards(GetCardList(choice), choice);
-        }
-
-        private void CallStackUpdate()
-        {
-            var stacks = GetStackList();
-            var choice = _manageView.DisplayStackPrompt(stacks, "Choose a stack of cards to update::");
-            choice.Name = CallGetStackName("Update stack::");
-
-            _manageService.StackUpdate(choice);
-
-            ReturnToManageMenu("Stack updated successfully");
-        }
-
-        private void CallStackDelete()
-        {
-            var stacks = GetStackList();
-            var choice = _manageView.DisplayStackPrompt(stacks, "Choose a stack of cards to delete::");
-            _manageService.StackDelete(choice);
-
-            ReturnToManageMenu("Stack deleted successfully");
+            if (cards.Count() == 0)
+            {
+                CallShowCards(cards, choice);
+            }
+            else
+            {
+                var card = _manageView.DisplayCardPrompt(cards, "Choose a card to delete::");
+                _manageService.CardDelete(card.CardId);
+                ReturnToCardList(choice, "Card deleted successfully =)");
+            }
         }
 
         private List<StackModel> GetStackList()
@@ -223,6 +222,21 @@ namespace Flashcards.m1chael888.Controllers
                     Console.ReadKey();
                 });
             HandleManageMenu();
+        }
+
+        private void ReturnToCardList(StackModel choice, string msg)
+        {
+            Console.Clear();
+            AnsiConsole.MarkupLine($"[lime]{msg}[/]");
+
+            AnsiConsole.Status()
+                .Spinner(Spinner.Known.Point)
+                .SpinnerStyle("white")
+                .Start("Press any key to return", x =>
+                {
+                    Console.ReadKey();
+                });
+            CallShowCards(GetCardList(choice), choice);
         }
     }
 }

@@ -1,7 +1,8 @@
-﻿using Spectre.Console;
-using static Flashcards.m1chael888.Enums.ManageViewEnums;
+﻿using Flashcards.m1chael888.Models;
+using Spectre.Console;
 using static Flashcards.m1chael888.Enums.EnumExtension;
-using Flashcards.m1chael888.Models;
+using static Flashcards.m1chael888.Enums.ManageViewEnums;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Flashcards.m1chael888.Views
 {
@@ -74,17 +75,6 @@ namespace Flashcards.m1chael888.Views
             return choice;
         }
 
-        public void DisplayCardList(List<CardDto> cards, string stackName)
-        {
-            AnsiConsole.MarkupLine($"[lime]Cards in {stackName}::[/]\n");
-            AnsiConsole.MarkupLine("[lime]Id\tFront\tBack[/]");
-            foreach (CardDto card in cards)
-            {
-                AnsiConsole.MarkupLine($"{card.CardId}\t{card.Front}\t{card.Back}");
-            }
-            Console.WriteLine();
-        }
-
         public ViewCardsOption DisplayCardMenu()
         {
             var choice = AnsiConsole.Prompt(
@@ -111,17 +101,35 @@ namespace Flashcards.m1chael888.Views
             return AnsiConsole.Ask<string>("[lime]Enter the back of the card (answer)[/]");
         }
 
+        public void DisplayCardList(List<CardDto> cards, string stackName)
+        {
+            AnsiConsole.MarkupLine($"[lime]Cards in {stackName}::[/]\n");
+            AnsiConsole.MarkupLine("[lime]Id[/]");
+            foreach (CardDto card in cards)
+            {
+                string front = card.Front; string back = card.Back;
+                AnsiConsole.MarkupLine($"{card.DisplayId}\t{CheckLength(front).PadRight(28)}\t{CheckLength(back).PadRight(28)}");
+            }
+            Console.WriteLine();
+        }
+
         public CardDto DisplayCardPrompt(List<CardDto> cards, string title)
         {
             Console.Clear();
             return AnsiConsole.Prompt(
                 new SelectionPrompt<CardDto>()
                 .Title($"[lime]{title}[/]")
-                .UseConverter(x => $"{x.CardId}\t{x.Front}\t{x.Back}")
+                .UseConverter(x => $"{x.DisplayId}\t{CheckLength(x.Front).PadRight(28)}\t{CheckLength(x.Back).PadRight(28)}")
                 .AddChoices(cards)
                 .HighlightStyle("lime")
                 .WrapAround()
                 );
+        }
+
+        string CheckLength(string myString)
+        {
+            if (myString.Length > 28) myString = myString.Substring(0, 25) + "...";
+            return myString;
         }
     }
 }

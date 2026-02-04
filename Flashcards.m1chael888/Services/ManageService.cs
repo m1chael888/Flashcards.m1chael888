@@ -55,12 +55,13 @@ namespace Flashcards.m1chael888.Services
             List<CardModel> cardModels = _cardRepository.Read(stack.StackId);
             var cardDtos = new List<CardDto>();
 
-            foreach (var card in cardModels)
+            for (int i = 0; i < cardModels.Count(); i++)
             {
                 var cardDto = new CardDto();
-                cardDto.CardId = card.CardId;
-                cardDto.Front = card.Front;
-                cardDto.Back = card.Back;
+                cardDto.DisplayId = i + 1;
+                cardDto.CardId = cardModels[i].CardId;
+                cardDto.Front = cardModels[i].Front;
+                cardDto.Back = cardModels[i].Back;
                 cardDtos.Add(cardDto);
             }
             return cardDtos;
