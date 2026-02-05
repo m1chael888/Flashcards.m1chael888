@@ -13,5 +13,15 @@ namespace Flashcards.m1chael888.Enums
             [Description("Back")]
             Back
         }
+
+        public enum CardResult
+        {
+            [Description("I knew the answer")]
+            Right,
+            [Description("I got it wrong")]
+            Wrong,
+            [Description("Go back to menu")]
+            Back
+        }
     }
 }

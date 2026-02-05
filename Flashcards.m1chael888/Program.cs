@@ -38,6 +38,7 @@ namespace Flashcards.m1chael888
 
             collection.AddScoped<IStackRepository>(x => new StackRepository(connectionString));
             collection.AddScoped<ICardRepository>(x => new CardRepository(connectionString));
+            collection.AddScoped<ISessionRepository>(x => new SessionRepository(connectionString));
 
             var provider = collection.BuildServiceProvider();
 

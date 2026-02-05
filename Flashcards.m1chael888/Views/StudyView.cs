@@ -1,12 +1,17 @@
 ﻿using Spectre.Console;
 using static Flashcards.m1chael888.Enums.StudyViewEnums;
 using static Flashcards.m1chael888.Enums.EnumExtension;
+using Flashcards.m1chael888.Models;
 
 namespace Flashcards.m1chael888.Views
 {
     public interface IStudyView
     {
         StudyMenuOption ShowMenu();
+        void ShowFront(CardDto card);
+        CardResult ShowBack(CardDto card);
+        void ShowEnd(string score);
+        void ShowSessionHistory(List<SessionModel> sessions);
     }
     public class StudyView : IStudyView
     {
@@ -21,6 +26,59 @@ namespace Flashcards.m1chael888.Views
                     .WrapAround()
                     );
             return choice;
+        }
+
+        public void ShowFront(CardDto card)
+        {
+            AnsiConsole.MarkupLine($"[lime]Card {card.DisplayId}[/]\n");
+            AnsiConsole.MarkupLine($"[lime]Question:[/] {card.Front}");
+            ReturnStatus("Press any key to show the answer");
+        }
+
+        public CardResult ShowBack(CardDto card)
+        {
+            Console.Clear();
+            AnsiConsole.MarkupLine($"[lime]Card {card.DisplayId}[/]\n");
+            AnsiConsole.MarkupLine($"[lime]Answer:[/] {card.Back}\n");
+
+            var result = AnsiConsole.Prompt(
+                new SelectionPrompt<CardResult>()
+                    .AddChoices(Enum.GetValues<CardResult>())
+                    .UseConverter(x => GetDescription(x))
+                    .HighlightStyle("lime")
+                    .WrapAround());
+            return result;
+        }
+
+        public void ShowEnd(string score)
+        {
+            Console.Clear();
+            AnsiConsole.MarkupLine("[lime]Session ended..[/]\n");
+            AnsiConsole.MarkupLine($"[lime]Score:[/] {score}");
+            ReturnStatus("Press any key to show the answer");
+        }
+
+        public void ShowSessionHistory(List<SessionModel> sessions)
+        {
+            AnsiConsole.MarkupLine("[lime]Session History::[/]\n");
+            AnsiConsole.MarkupLine("[lime]Id\tDate\t\tScore\tStack studied[/]");
+
+            foreach (var session in sessions)
+            {
+                AnsiConsole.MarkupLine($"{session.SessionId}\t{session.Date}\t{session.Score}\t{session.StackId}");
+            }
+            ReturnStatus("Press any key to return to menu");
+        }
+
+        private void ReturnStatus(string msg)
+        {
+            AnsiConsole.Status()
+                .Spinner(Spinner.Known.Point)
+                .SpinnerStyle("white")
+                .Start(msg, x =>
+                {
+                    Console.ReadKey();
+                });
         }
     }
 }
