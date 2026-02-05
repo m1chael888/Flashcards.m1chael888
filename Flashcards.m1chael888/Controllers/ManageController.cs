@@ -1,19 +1,21 @@
-﻿using static Flashcards.m1chael888.Enums.ManageViewEnums;
-using Flashcards.m1chael888.Views;
-using Spectre.Console;
+﻿using static Flashcards.m1chael888.Enums.ManageEnums;
 using Flashcards.m1chael888.Services;
 using Flashcards.m1chael888.Models;
+using Flashcards.m1chael888.Views;
+using Spectre.Console;
 
 namespace Flashcards.m1chael888.Controllers
 {
     public class ManageController
     {
-        private IManageView _manageView;
+        private IStackView _stackView;
+        private ICardView _cardView;
         private IStackService _stackService;
         private ICardService _cardService;
-        public ManageController(IManageView manageView, IStackService stackService, ICardService cardService)
+        public ManageController(IStackView stackView, ICardView cardView, IStackService stackService, ICardService cardService)
         {
-            _manageView = manageView;
+            _stackView = stackView;
+            _cardView = cardView;
             _stackService = stackService;
             _cardService = cardService;
         }
@@ -24,27 +26,27 @@ namespace Flashcards.m1chael888.Controllers
 
             switch (choice)
             {
-                case ManageMenuOption.CreateStack:
+                case StackMenuOption.CreateStack:
                     CallStackCreate();
                     break;
-                case ManageMenuOption.ViewStacks:
+                case StackMenuOption.ViewStacks:
                     CallStacksRead();
                     break;
-                case ManageMenuOption.UpdateStack:
+                case StackMenuOption.UpdateStack:
                     CallStackUpdate();
                     break;
-                case ManageMenuOption.DeleteStack:
+                case StackMenuOption.DeleteStack:
                     CallStackDelete();
                     break;
-                case ManageMenuOption.Back:
+                case StackMenuOption.Back:
                     break;
             }
         }
 
-        private ManageMenuOption CallManageMenu()
+        private StackMenuOption CallManageMenu()
         {
             Console.Clear();
-            var choice = _manageView.ShowMenu();
+            var choice = _stackView.ShowMenu();
             return choice;
         }
 
@@ -60,7 +62,7 @@ namespace Flashcards.m1chael888.Controllers
         {
             Console.Clear();
             var stacks = GetStackList();
-            var choice = _manageView.DisplayStackList(stacks);
+            var choice = _stackView.DisplayStackList(stacks);
             
             switch (choice)
             {
@@ -76,7 +78,7 @@ namespace Flashcards.m1chael888.Controllers
         private void CallStackUpdate()
         {
             var stacks = GetStackList();
-            var choice = _manageView.DisplayStackPrompt(stacks, "Choose a stack of cards to update::");
+            var choice = _stackView.DisplayStackPrompt(stacks, "Choose a stack of cards to update::");
             choice.Name = CallGetStackName("Update stack::");
 
             _stackService.StackUpdate(choice);
@@ -87,7 +89,7 @@ namespace Flashcards.m1chael888.Controllers
         private void CallStackDelete()
         {
             var stacks = GetStackList();
-            var choice = _manageView.DisplayStackPrompt(stacks, "Choose a stack of cards to delete::");
+            var choice = _stackView.DisplayStackPrompt(stacks, "Choose a stack of cards to delete::");
             _stackService.StackDelete(choice);
 
             ReturnToManageMenu("Stack deleted successfully");
@@ -98,7 +100,7 @@ namespace Flashcards.m1chael888.Controllers
             Console.Clear();
             if (cards.Count() > 0)
             {
-                _manageView.DisplayCardList(cards, choice.Name);
+                _cardView.DisplayCardList(cards, choice.Name);
             }
             else
             {
@@ -109,7 +111,7 @@ namespace Flashcards.m1chael888.Controllers
 
         private void HandleCardsReadMenu(StackModel choice)
         {
-            switch (_manageView.DisplayCardMenu())
+            switch (_cardView.DisplayCardMenu())
             {
                 case ViewCardsOption.CreateCard:
                     CallCardCreate(choice);
@@ -129,8 +131,8 @@ namespace Flashcards.m1chael888.Controllers
         void CallCardCreate(StackModel choice)
         {
             var card = new CardModel();
-            var front = _manageView.GetCardFront("Creating");
-            var back = _manageView.GetCardBack("Creating");
+            var front = _cardView.GetCardFront("Creating");
+            var back = _cardView.GetCardBack("Creating");
             card.Front = front;
             card.Back = back;
             card.StackId = choice.StackId;
@@ -143,7 +145,7 @@ namespace Flashcards.m1chael888.Controllers
         {
             Console.Clear();
             var stacks = GetStackList();
-            var choice = _manageView.DisplayStackPrompt(stacks, "Choose which stack's cards youd like to view::");
+            var choice = _stackView.DisplayStackPrompt(stacks, "Choose which stack's cards youd like to view::");
             var cards = _cardService.CardsRead(choice);
 
             CallShowCards(cards, choice);
@@ -158,9 +160,9 @@ namespace Flashcards.m1chael888.Controllers
             }
             else
             {
-                var card = _manageView.DisplayCardPrompt(cards, "Choose a card to update::");
-                var front = _manageView.GetCardFront("Updating");
-                var back = _manageView.GetCardBack("Updating");
+                var card = _cardView.DisplayCardPrompt(cards, "Choose a card to update::");
+                var front = _cardView.GetCardFront("Updating");
+                var back = _cardView.GetCardBack("Updating");
                 var updatedCard = new CardModel();
                 updatedCard.CardId = card.CardId;
                 updatedCard.Front = front;
@@ -181,7 +183,7 @@ namespace Flashcards.m1chael888.Controllers
             }
             else
             {
-                var card = _manageView.DisplayCardPrompt(cards, "Choose a card to delete::");
+                var card = _cardView.DisplayCardPrompt(cards, "Choose a card to delete::");
                 _cardService.CardDelete(card.CardId);
                 ReturnToCardList(choice, "Card deleted successfully =)");
             }
@@ -202,11 +204,11 @@ namespace Flashcards.m1chael888.Controllers
         private string CallGetStackName(string msg)
         {
             var stacks = GetStackList();
-            string stackName = _manageView.GetStackName(msg);
+            string stackName = _stackView.GetStackName(msg);
 
             while (stacks.Where(x => x.Name == stackName).Count() > 0)
             {
-                stackName = _manageView.GetStackName(msg, exists: true);
+                stackName = _stackView.GetStackName(msg, exists: true);
             }
             return stackName;
         }

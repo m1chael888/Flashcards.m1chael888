@@ -2,9 +2,9 @@
 
 namespace Flashcards.m1chael888.Enums
 {
-    public static class ManageViewEnums
+    public static class ManageEnums
     {
-        public enum ManageMenuOption
+        public enum StackMenuOption
         {
             [Description("Create a stack")]
             CreateStack,

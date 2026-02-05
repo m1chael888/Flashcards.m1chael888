@@ -28,8 +28,9 @@ namespace Flashcards.m1chael888
             collection.AddScoped<ManageController>();
 
             collection.AddScoped<IMainMenuView, MainMenuView>();
+            collection.AddScoped<IStackView, StackView>();
+            collection.AddScoped<ICardView, CardView>();
             collection.AddScoped<IStudyView, StudyView>();
-            collection.AddScoped<IManageView, ManageView>();
 
             collection.AddScoped<IStudyService, StudyService>();
             collection.AddScoped<IStackService, StackService>();
