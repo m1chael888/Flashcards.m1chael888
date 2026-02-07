@@ -10,7 +10,7 @@ namespace Flashcards.m1chael888.Views
         StudyMenuOption ShowMenu();
         void ShowFront(CardDto card);
         CardResult ShowBack(CardDto card);
-        void ShowEnd(string score);
+        void ShowEnd(string score, int count);
         void ShowSessionHistory(List<SessionModel> sessions);
     }
     public class StudyView : IStudyView
@@ -50,12 +50,20 @@ namespace Flashcards.m1chael888.Views
             return result;
         }
 
-        public void ShowEnd(string score)
+        public void ShowEnd(string score, int count)
         {
             Console.Clear();
-            AnsiConsole.MarkupLine("[lime]Session ended..[/]\n");
-            AnsiConsole.MarkupLine($"[lime]Score:[/] {score}");
-            ReturnStatus("Press any key to show the answer");
+            switch (count)
+            {
+                case (>0):
+                    AnsiConsole.MarkupLine("[lime]Session saved..[/]\n");
+                    AnsiConsole.MarkupLine($"[lime]Score:[/] {score}");
+                    break;
+                case (0):
+                    AnsiConsole.MarkupLine("[lime]Session canceled, not saved[/]\n");
+                    break;
+            }
+            ReturnStatus("Press any key to return");
         }
 
         public void ShowSessionHistory(List<SessionModel> sessions)

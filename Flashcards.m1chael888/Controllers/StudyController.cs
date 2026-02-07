@@ -97,16 +97,19 @@ namespace Flashcards.m1chael888.Controllers
                             break;
                         case CardResult.Back:
                             done = true;
-                            scoreString = $"{score}/{count}";
-                            CallSessionCreate(scoreString, choice);
-                            EndSession(scoreString);
+                            if (count > 0)
+                            {
+                                scoreString = $"{score}/{count}";
+                                CallSessionCreate(scoreString, choice);
+                            }
+                            EndSession(scoreString, count);
                             break;
                     }
                 }
                 done = true;
                 scoreString = $"{score}/{count}";
                 CallSessionCreate(scoreString, choice);
-                EndSession($"{score}/{count}");
+                EndSession($"{score}/{count}", count);
             }
         }
 
@@ -120,9 +123,9 @@ namespace Flashcards.m1chael888.Controllers
             _studyService.SessionCreate(session);
         }
 
-        private void EndSession(string score)
+        private void EndSession(string score, int count)
         {
-            _studyView.ShowEnd(score);
+            _studyView.ShowEnd(score, count);
             HandleStudyMenu();
         }
 
