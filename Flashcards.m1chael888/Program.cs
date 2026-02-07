@@ -26,6 +26,7 @@ namespace Flashcards.m1chael888
             collection.AddScoped<IDbInitializer>(x => new DbInitializer(connectionString));
             collection.AddScoped<StudyController>();
             collection.AddScoped<ManageController>();
+            collection.AddScoped<IMainMenuRouter, MainMenuRouter>();
 
             collection.AddScoped<IMainMenuView, MainMenuView>();
             collection.AddScoped<IStackView, StackView>();
@@ -49,24 +50,8 @@ namespace Flashcards.m1chael888
             var studyController = provider.GetRequiredService<StudyController>();
             var manageController = provider.GetRequiredService<ManageController>();
 
-            while (true)
-            {
-                Console.Clear();
-                var choice = mainMenu.ShowMenu();
-
-                switch (choice)
-                {
-                    case MainMenuOption.Study:
-                        studyController.HandleStudyMenu();
-                        break;
-                    case MainMenuOption.Manage:
-                        manageController.HandleManageMenu();
-                        break;
-                    case MainMenuOption.Exit:
-                        Environment.Exit(0);
-                        break;
-                }
-            }
+            var router = provider.GetRequiredService<IMainMenuRouter>();
+            router.Route(studyController, manageController, mainMenu);
         }
     } 
 }

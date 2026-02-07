@@ -2,7 +2,6 @@
 using Flashcards.m1chael888.Services;
 using Flashcards.m1chael888.Views;
 using Spectre.Console;
-using System.Security;
 using static Flashcards.m1chael888.Enums.StudyViewEnums;
 
 namespace Flashcards.m1chael888.Controllers
