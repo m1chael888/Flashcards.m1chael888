@@ -12,7 +12,7 @@ namespace Flashcards.m1chael888.Enums
             {
                 return attributes[0].Description;
             }
-            return attributes[0].Description;
+            return value.ToString();
         }
     }
 }
