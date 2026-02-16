@@ -206,7 +206,7 @@ namespace Flashcards.m1chael888.Controllers
             var stacks = GetStackList();
             string stackName = _stackView.GetStackName(msg);
 
-            while (stacks.Where(x => x.Name == stackName).Count() > 0)
+            while (stacks.Where(x => x.Name == stackName).Any())
             {
                 stackName = _stackView.GetStackName(msg, exists: true);
             }
