@@ -79,34 +79,34 @@ namespace Flashcards.m1chael888.Controllers
             var scoreString = "";
 
             bool done = false;
-            while (!done)
+            foreach (var card in cards)
             {
-                foreach (var card in cards)
+                if (done) break;
+                Console.Clear();
+                _studyView.ShowFront(card);
+                var result = _studyView.ShowBack(card);
+                switch (result)
                 {
-                    Console.Clear();
-                    _studyView.ShowFront(card);
-                    var result = _studyView.ShowBack(card);
-                    switch (result)
-                    {
-                        case CardResult.Right:
-                            count++;
-                            score++;
-                            break;
-                        case CardResult.Wrong:
-                            count++;
-                            break;
-                        case CardResult.Back:
-                            done = true;
-                            if (count > 0)
-                            {
-                                scoreString = $"{score}/{count}";
-                                CallSessionCreate(scoreString, choice);
-                            }
-                            EndSession(scoreString, count);
-                            break;
-                    }
+                    case CardResult.Right:
+                        count++;
+                        score++;
+                        break;
+                    case CardResult.Wrong:
+                        count++;
+                        break;
+                    case CardResult.Back:
+                        done = true;
+                        if (count > 0)
+                        {
+                            scoreString = $"{score}/{count}";
+                            CallSessionCreate(scoreString, choice);
+                        }
+                        EndSession(scoreString, count);
+                        break;
                 }
-                done = true;
+            }
+            if (!done)
+            {
                 scoreString = $"{score}/{count}";
                 CallSessionCreate(scoreString, choice);
                 EndSession($"{score}/{count}", count);
