@@ -10,7 +10,7 @@ namespace Flashcards.m1chael888.Services
     }
     public class StudyService : IStudyService
     {
-        private ISessionRepository _sessionRepository;
+        private readonly ISessionRepository _sessionRepository;
         public StudyService(ISessionRepository sessionRepository) 
         {
             _sessionRepository = sessionRepository;

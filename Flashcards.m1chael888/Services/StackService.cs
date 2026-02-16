@@ -12,7 +12,7 @@ namespace Flashcards.m1chael888.Services
     }
     public class StackService : IStackService
     {
-        private IStackRepository _stackRepository;
+        private readonly IStackRepository _stackRepository;
         public StackService(IStackRepository stackRepository)
         {
             _stackRepository = stackRepository;

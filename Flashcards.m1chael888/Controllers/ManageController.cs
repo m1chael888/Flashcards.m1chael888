@@ -8,10 +8,10 @@ namespace Flashcards.m1chael888.Controllers
 {
     public class ManageController
     {
-        private IStackView _stackView;
-        private ICardView _cardView;
-        private IStackService _stackService;
-        private ICardService _cardService;
+        private readonly IStackView _stackView;
+        private readonly ICardView _cardView;
+        private readonly IStackService _stackService;
+        private readonly ICardService _cardService;
         public ManageController(IStackView stackView, ICardView cardView, IStackService stackService, ICardService cardService)
         {
             _stackView = stackView;
@@ -98,7 +98,7 @@ namespace Flashcards.m1chael888.Controllers
         private void CallShowCards(List<CardDto> cards, StackModel choice)
         {
             Console.Clear();
-            if (cards.Count() > 0)
+            if (cards.Count > 0)
             {
                 _cardView.DisplayCardList(cards, choice.Name);
             }
@@ -154,7 +154,7 @@ namespace Flashcards.m1chael888.Controllers
         void CallCardUpdate(StackModel choice)
         {
             var cards = GetCardList(choice);
-            if (cards.Count() == 0)
+            if (cards.Count == 0)
             {
                 CallShowCards(cards, choice);
             }
@@ -177,7 +177,7 @@ namespace Flashcards.m1chael888.Controllers
         void CallCardDelete(StackModel choice)
         {
             var cards = GetCardList(choice);
-            if (cards.Count() == 0)
+            if (cards.Count == 0)
             {
                 CallShowCards(cards, choice);
             }

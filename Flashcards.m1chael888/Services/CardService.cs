@@ -12,7 +12,7 @@ namespace Flashcards.m1chael888.Services
     }
     public class CardService : ICardService
     {
-        private ICardRepository _cardRepository;
+        private readonly ICardRepository _cardRepository;
         public CardService(ICardRepository cardRepository)
         {
             _cardRepository = cardRepository;

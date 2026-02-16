@@ -8,12 +8,12 @@ namespace Flashcards.m1chael888.Controllers
 {
     public class StudyController
     {
-        private IStudyView _studyView;
-        private IStackView _stackView;
-        private ICardView _cardView;
-        private IStackService _stackService;
-        private ICardService _cardService;
-        private IStudyService _studyService;
+        private readonly IStudyView _studyView;
+        private readonly IStackView _stackView;
+        private readonly ICardView _cardView;
+        private readonly IStackService _stackService;
+        private readonly ICardService _cardService;
+        private readonly IStudyService _studyService;
         public StudyController(IStudyView studyView, IStackView stackView, ICardView cardView, IStackService stackService, ICardService cardService, IStudyService studyService)
         {
             _studyView = studyView;
@@ -61,7 +61,7 @@ namespace Flashcards.m1chael888.Controllers
             var choice = _stackView.DisplayStackPrompt(stacks, "Which stack would you like to study from??");
             var cards = GetCardList(choice).Shuffle().ToList();
             
-            if (cards.Count() > 0)
+            if (cards.Count > 0)
             {
                 StartStudySession(choice, cards);
             }
